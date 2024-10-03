@@ -8,7 +8,6 @@ ottenuto dalla somma dei dadi un valore piu' alto.*/
 
 using namespace std;
 
-const int NUMERO_GIOCATORI_SQUADRA = 3;
 const int NUMERO_TIRI_A_TESTA = 3;
 
 int lanciaDado();
@@ -22,13 +21,9 @@ int main(){
     cout << "Seed random generator: " << seed << endl
          << endl
          << endl;
-    for (int i = 0; i < NUMERO_GIOCATORI_SQUADRA; i++)
-    {
-        for (int j = 0; j < NUMERO_TIRI_A_TESTA; j++)
-        {
-            somma_s1 += tiraDadi();
-            somma_s2 += tiraDadi();
-        }
+    for (int i = 0; i < NUMERO_TIRI_A_TESTA; i++){
+        somma_s1 += tiraDadi();
+        somma_s2 += tiraDadi();
     }
     cout << "La squadra 1 ha fatto " << somma_s1 << endl
          << endl;
@@ -47,5 +42,5 @@ int lanciaDado(){
     return (rand() % 6) + 1;
 }
 int tiraDadi(){
-    return lanciaDado()+lanciaDado();
+    return lanciaDado() + lanciaDado();
 }
