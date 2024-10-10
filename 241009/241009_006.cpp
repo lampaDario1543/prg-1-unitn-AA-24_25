@@ -61,11 +61,12 @@ void left_shift(int *v, int idx, int d){
 
 int remove_occ(int *v, int n, int &d){
     int ctr = 0;
-    const int dim = d;
     for (int i = 0; i < d; i++){
         if (v[i] == n){
             left_shift(v, i, d);
+            i-=1; //non dovrei farlo è terribile.
             --d;
+            ++ctr;
         }
     }
     return ctr;
