@@ -44,14 +44,5 @@ void sort(int *v, int i, int j){
 }
 
 void sort(int *v){
-    /*for (int i = 0; i < DIM-1; i++){
-        for (int j = 0; j < DIM-1; j++){
-            if (v[j] > v[j+1]){
-                int box = v[j];
-                v[j] = v[j+1];
-                v[j+1] = box;
-            }
-        }
-    }*/
    sort(v,0,0);
 }
