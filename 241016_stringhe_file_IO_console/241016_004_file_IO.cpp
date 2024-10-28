@@ -27,8 +27,7 @@ const int CAR = 2 + ('z' - 'a') + ('Z' - 'A') + 10; // 10 sono i numeri.
 
 void cifra(char *msg, char[2][CAR]);
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     if (argc < 2){
         cerr << "Inserisci il nome di un file" << endl;
         exit(0);
