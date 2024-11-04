@@ -23,6 +23,7 @@ int main(){
     time_t seed = time(NULL);
     cout << "Random seed generator= " << seed << endl
          << endl;
+    //srand(1730723539);
     srand(seed);
     int v[DIM];
     carica(v, 100);
@@ -41,6 +42,7 @@ void shell_sort(int *v){
     }
     for (int i = 0; i < ctr; i++){
         const int len = DIM / pow(2, (i + 1));
+        cout << len<<endl;
         for (int j = 0; j < DIM - len; j++){
             if (v[j] > v[j + len]){
                 int box = v[j];
