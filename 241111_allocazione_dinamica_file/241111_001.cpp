@@ -30,8 +30,7 @@ int main(int argc, char *argv[]){
     time_t seed = time(NULL);
     cout << "Random seed generator: " << seed << endl;
     srand(seed);
-    int *v = new int[N];
-    v = generate_numbers(N);
+    int *v = generate_numbers(N);
     visualizza(v, N);
     delete[] v;
     return 0;
