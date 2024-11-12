@@ -9,3 +9,4 @@ NOT_DONE*
 *.txt
 *.exe
 !**/*file*/**/*.txt
+*.pdf
