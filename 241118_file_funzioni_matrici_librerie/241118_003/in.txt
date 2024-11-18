@@ -1,0 +1,14 @@
+/*solo 6 mail sono corrette*/
+tttut@gmail.com
+.tttut@gmail.com
+t435tut@gmail.com
+ciccio@icloud.com
+rambo@libero.it.
+rambo@@libero.it.
+Luca
+ra}bo@li_ero.it
+rabo@
+marco_polo@aaa.it
+marco.polo@bbb.it
+@pip.com
+ANDREA_ROSSI@mail.google.com
