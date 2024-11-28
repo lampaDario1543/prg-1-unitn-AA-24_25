@@ -1,0 +1,78 @@
+Esercizio 1 (Appello Giugno 2024)
+Un laboratorio medico vuole sviluppare un software per monitorare l’andamento della glicemia di un
+insieme di pazienti diabetici. I dati di ogni paziente sono salvati su un file di testo il cui formato è
+predefinito. Il nome del file è PazienteX.txt, ove X è un numero intero che identifica un determinato
+paziente. Per ogni paziente nel file sono salvati i seguenti dati (nella prima riga): il peso del paziente
+espresso in kg (un numero reale), la sua età espressa in anni (un numero intero). Vi è poi specificata una
+matrice glicemia di numeri interi contenente 12 righe e 31 colonne. Le righe della matrice corrispondono
+ai mesi dell’anno, ciascuna colonna corrisponde alla misura della glicemia misurata quotidianamente sul
+paziente.
+Nota: Si supponga, per semplicità, che ogni mese sia composto sempre da 31 giorni e che non ci siano
+errori nel formato del file.
+Si scriva un programma C++ che:
+ Prenda come argomenti:
+a) un nome di un file che contiene i dati di un paziente secondo la specifica precedente;
+b) un intero n che rappresenta il mese che si vuole analizzare;
+c) un intero ipo che rappresenta il valore di glicemia sotto il quale si verifica un caso di
+ipoglicemia;
+d) un intero iper che rappresenta il valore di glicemia sopra il quale si verifica un caso di
+iperglicemia.
+ Controlli che il numero di parametri passati sia esattamente 4 e segnali errore nel caso contrario
+(si veda esempio). Inoltre, controlli che:
+a) i valori di ipo e iper siano tali che ipo ≤ iper, e che siano rispettivamente compresi nel
+range [80, 95] e [105, 120];
+b) il mese sia compreso tra [1,12].
+Segnali errore nel caso di violazioni ed esca (si vedano esempi).
+Nota: L’output deve essere esattamente come quello riportato negli esempi.
+ Apra il file specificato contenente i dati del paziente e, nel caso il file non esista, ritorni un
+messaggio di errore e termini il programma.
+ Legga e memorizzi i dati del paziente in una struttura Paziente avente come campi il peso
+del paziente espresso in kg (un numero reale), la sua età espressa in anni (un numero intero)
+e una matrice glicemia di numeri interi contenente 12 righe e 31 colonne.
+ Invochi una funzione Monitora che riceva in ingresso (ovvero come parametro) una struttura
+Paziente, un numero intero n che indica il mese, e due numeri interi ipo e iper, indicanti
+rispettivamente il valore di glicemia sotto il quale si verifica un caso di ipoglicemia e il valore di
+glicemia sopra il quale si verifica un caso di iperglicemia.
+La funzione restituirà:
+a) un intero che segnala il numero di giorni durante il mese n per cui il valore di glicemia è
+maggiore di iper;
+b) il numero di giorni durante il mese n per cui il valore di glicemia é minore di ipo. Tale
+valore sarà ritornato tramite il meccanismo di passaggio di parametri per riferimento;
+c) il valore medio della glicemia durante il mese n. Tale valore sarà ritornato tramite il
+meccanismo di passaggio di parametri per riferimento;
+d) la varianza 𝜎
+2
+. Tale valore sarà ritornato tramite il meccanismo di passaggio di parametri
+per riferimento. Si ricorda che la deviazione standard σ per un insieme di valori 𝑥1, … ,
+𝑥𝑛 è definita come:
+σ =√
+∑ 𝑥𝑖
+2 − 𝑁.𝑥̅
+𝑁 2
+𝑖=1
+𝑁
+ dove 𝑥̅è il valore medio di 𝑥1, … , 𝑥𝑛
+ Stampi a video tutti e 4 i valori calcolati al punto precedente (La stampa NON deve avvenire
+all’interno della funzione Monitora).
+Nota: L’output deve essere esattamente come quello riportato negli esempi (tranne per la parte
+numerica che ovviamente può variare rispetto ai parametri passati).
+Esempi
+gv > ./a.out Paziente1.txt 3 91 111
+Il numero di giorni di iperglicemia e’: 4
+il numero di giorni di ipoglicemia e’: 14
+la media e’: 90.6452
+la varianza e’: 283.003
+gv > ./a.out Paziente1.txt 3 74 126
+I valori di ipoglicemia e iperglicemia non sono corretti. Errore!
+gv > ./a.out Paziente1.txt 3 96 104
+I valori di ipoglicemia e iperglicemia non sono corretti. Errore!
+gv > ./a.out Paziente1.txt 3 126 125
+I valori di ipoglicemia e iperglicemia non sono corretti. Errore!
+gv > ./a.out Paziente1.txt 13 126 125
+I valori di ipoglicemia e iperglicemia non sono corretti. Errore!
+gv > ./a.out Paziente1.txt 13 74 126
+I valori di ipoglicemia e iperglicemia non sono corretti. Errore!
+gv > ./a.out Paziente1.txt 74 126
+Il numero di parametri e’ diverso da 4. Errore!
+gv > ./a.out Paziente10.txt 3 91 111
+Il file non esiste. Errore!
