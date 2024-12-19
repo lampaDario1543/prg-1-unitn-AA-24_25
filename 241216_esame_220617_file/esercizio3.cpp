@@ -6,7 +6,7 @@ typedef struct _list list;
 #define MAXCODE 100
 #define MAXDIP 10
 
-struct _list
+struct list
 {
   int code;
   list *next;
