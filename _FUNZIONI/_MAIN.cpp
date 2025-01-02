@@ -588,3 +588,17 @@ int length (list * s, list * x) { //x primo elemento
             return 0;
         return 1+count_digits(n/10);
     }
+
+
+
+//conta sottostringhe (substring):
+//ATTENZIONE NECESSITA' DI CSTRING
+    int subStringOcc(char *word, char *toFind){
+        int occ=0;
+        char *newWord=word;
+        while((newWord=strstr(newWord, toFind))!=nullptr){
+            (newWord)++;
+            ++occ;
+        }
+        return occ;
+    }
