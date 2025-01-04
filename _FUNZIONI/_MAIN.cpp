@@ -241,42 +241,6 @@ using namespace std;
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 /*
 ####################
-#######QUEUE########
-####################
-*/
-
-//get value di una coda in posizione n.
-    void getValueAux(Queue *&s, int i, int &res)
-    {
-        if (!isEmpty(s)) {
-            int value = dequeue(s);
-            if (i == 1) {
-                res = value;
-            }
-            getValueAux(s, i - 1, res);
-            enqueue(s, value);
-        }
-    }
-    int getValue(Queue * & s, int i) {
-        int res;
-        getValueAux(s, i, res);
-        reverse(s);
-        return res;
-    }
-
-
-
-// reverse della coda
-    void reverse(Queue * & s) {
-        if (!isEmpty(s)) {
-            int v = dequeue(s);
-            reverse(s);
-            enqueue(s, v);
-        }
-    }
-/*---------------------------------------------------------------------------------------------------------------------------------------*/
-/*
-####################
 ##LISTE RICORSIVE###
 ####################
 */
@@ -400,7 +364,187 @@ int length (list * s, list * x) { //x primo elemento
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
+/*
+####################
+########STACK#######
+####################
+*/
 
+//reverse stack
+    void insertAtBottom(Stack *&s, int x) {
+        if (isEmpty(s)) {
+            push(s,x);
+            return;
+        }
+        int topElement = top(s);
+        pop(s);
+        insertAtBottom(s, x);
+        push(s,topElement);
+    }
+    void reverse(Stack *& s) {
+        if (isEmpty(s))
+            return;
+        int topElement = top(s);
+        pop(s);
+        reverse(s);
+        insertAtBottom(s, topElement);
+    }
+
+
+
+//lunghezza stack:
+    int length(Stack *s, int ctr=0){
+        if(s==nullptr)
+            return ctr;
+        return length(s->next, ctr+1);
+    }
+
+
+
+//stack vuoto:
+    bool isEmpty(Stack *s)
+    {
+        return (s == nullptr);
+    }
+
+
+
+//ottieni elemento in posizione n:
+//va da 0 a length-1
+    int getNth(Stack *&s, int n){
+        if(n==0)
+            return top(s);
+        int value = pop(s);
+        int res = getNth(s,n-1);
+        push(s,value);
+        return res;
+    }
+
+
+
+// Elimina un elemento in posizione n in uno Stack:
+    int removeNth(Stack *&s, int n){
+        if(n==0)
+            return pop(s);
+        int value = pop(s);
+        int res = removeNth(s,n-1);
+        push(s,value);
+        return res;
+    }
+
+
+
+//controlla se uno stack contiene un elemento:
+    bool contains(Stack *&s, const int n){
+        if(isEmpty(s))
+            return false;
+        else if(top(s)==n)
+            return true;
+        int value = pop(s);
+        int res = contains(s,n);
+        push(s,value);
+        return res;
+    }
+/*---------------------------------------------------------------------------------------------------------------------------------------*/
+/*
+####################
+#######QUEUE########
+####################
+*/
+
+// reverse coda:
+    void reverse(Queue *&q){
+        if(isEmpty(q))
+            return;
+        int v = dequeue(q);
+        reverse_rec(q);
+        enqueue(q, v);
+    }
+
+
+
+//lunghezza coda:
+//ATTENZIONE: IMPLEMENTARE ENTRAMBE LE FUNZIONI E ANCHE REVERSE.
+    int lenght_rec(Queue *&q, int ctr=0){
+        if(isEmpty(q))
+            return ctr;
+        int v = dequeue(q);
+        ctr++;
+        int res = lenght_rec(q, ctr);
+        enqueue(q, v);
+        return res;
+    }
+
+    int length(Queue * q) {
+        int res=lenght_rec(q);
+        reverse(q);
+        return res;
+    }
+
+
+
+//ottieni elemento in posizione n:
+//va da 0 a length-1
+//ATTENZIONE: necessita di reverse e isEmpty
+    void getNth_aux(Queue *&q, int i, int &res)
+    {
+        if(isEmpty(q)) return;
+        int n = dequeue(q);
+        if (i == 0)
+            res = n;
+        getNth_aux(q, i - 1, res);
+        enqueue(q, n);
+    }
+    int getNth(Queue * & q, int pos) {
+        int res;
+        getNth_aux(q, pos, res);
+        reverse(q);
+        return res;
+    }
+
+
+//rimuove un elemento in posizione N:
+//va da 0 a length-1
+//ATTENZIONE: necessita di reverse e isEmpty
+    void removeNth_aux(Queue *&q, int i, int &res)
+    {
+        if(isEmpty(q)) return;
+            int n = dequeue(q);
+            if (i == 0)
+                res = n;
+            removeNth_aux(q, i - 1, res);
+            if(i!=0)
+                enqueue(q, n);
+    }
+    int removeNth(Queue * & q, int pos) {
+        int res;
+        removeNth_aux(q, pos, res);
+        reverse(q);
+        return res;
+    }
+
+
+
+//controlla se una coda contiene un elemento:
+//ATTENZIONE: necessita di reverse e isEmpty
+    void contains_aux(Queue *&q, const int n, bool &r){
+        if(isEmpty(q)) return;
+
+        if(first(q)==n)
+            r=true;
+        int value = dequeue(q);
+        contains_aux(q,n,r);
+        enqueue(q,value);
+        return;
+    }
+
+    bool contains(Queue *&q, const int n){
+        bool res=false;
+        contains_aux(q,n, res);
+        reverse(q);
+        return res;
+    }  
+/*---------------------------------------------------------------------------------------------------------------------------------------*/
 
 
 /*
@@ -542,7 +686,23 @@ int length (list * s, list * x) { //x primo elemento
     }
 
 
-//right shift
+
+//convertitore da qualsiasi base a decimale.
+    int convert(char *s, const int base){
+        int res=0;
+        const int len=strlen(s);
+        for(int i=0;s[i]!='\0';i++){
+            int digit = s[i] - '0';
+            if(s[i]>='A' && s[i]<='Z')
+                digit = s[i] - 'A' + 10;
+            res += digit * pow(base, len-i-1);
+        }
+        return res;
+    }
+
+
+
+//right shift circolare
     void right_shift(int *v, const int DIM, int n)
     {
         n = (n % DIM);
@@ -562,7 +722,7 @@ int length (list * s, list * x) { //x primo elemento
     }
 
 
-//left shift su array
+//left shift circolare su array
     void left_shift(int *v, const int DIM, int n){
         n = (n % DIM);
         if (n == 0)

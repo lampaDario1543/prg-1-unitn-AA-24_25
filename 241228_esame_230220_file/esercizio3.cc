@@ -24,7 +24,6 @@ int trovaIlVincitore(int numeroDiAmici, int numeroDiSalti) {
     init();
     for(int i=0;i< numeroDiAmici;i++)
         enqueue(i+1);
-    int len=0;
     int n=0;
     int res=0;
     while(first(n)){
