@@ -65,20 +65,9 @@ void printStack(struct Stack * s, const char * message = "Stack: ") {
 // Non modificare questa parte sopra del codice
 
 // Inserire qui sotto la dichiarazione della funzione calcola
-Stack * calcola(Stack *&);
-int lenght(struct Stack *s) //NO SCEMO NON PUOI TOCCARE DETTAGLI IMPLEMENTATIVI
-{
-    int count = 0;
-    struct Stack *temp = s;
-    while (temp != nullptr)
-    {
-        count++;
-        temp = temp->next;
-    }
-    return count;
-}
-void calcola_aux(Stack *&s, Stack *&res, int, const int );
-int getOcc(Stack *&s,int i,const int DIM, const int N,  bool toSkip);
+Stack *calcola(Stack *&);
+void calcola_aux(Stack *&, Stack *&, int *);
+void getOcc(Stack *&, int *);
 // Inserire qui sopra la dichiarazione della funzione calcola
 
 
@@ -122,39 +111,23 @@ int main() {
 }
 
 // Inserire qui sotto la definizione della funzione calcola
-Stack * calcola(Stack *&s){
-    Stack *res=initStack();
-    if(isEmpty(s))
-        return res;
-    const int DIM=lenght(s);
-    calcola_aux(s, res, 0, DIM);
+Stack *calcola(Stack *&s){
+    Stack *res=nullptr;
+    const int DIM=10;
+    int occ[DIM]={0};
+    calcola_aux(s,res, occ);
     return res;
 }
-void calcola_aux(Stack *&s, Stack *&res, int i, const int DIM){
-    if(i==DIM)
-        return;
+
+void calcola_aux(Stack *&s, Stack *&res, int *occ){
+    if(isEmpty(s))  return;
     int n=pop(s);
-    calcola_aux(s,res,i+1, DIM);
-    int occ=getOcc(res, 0,lenght(res),n,false);
-    push(res, occ+1);
-    push(res, n);
-    push(s,n);
-}
-int getOcc(Stack *&s,int i,const int DIM, const int N,  bool toSkip){
-    if(isEmpty(s))
-        return 0;
-    if(i==DIM-1){
-        int n=top(s);
-        if(n==N && !toSkip) return 1;
-        else return 0;
-    }
-    int n=pop(s);
-    int res=0;
-    if(!toSkip && n==N){
-        res= 1+getOcc(s,i+1, DIM, N, !toSkip);
-    }else
-        res=getOcc(s,i+1,DIM, N,!toSkip);
+    ++occ[n];
+    calcola_aux(s,res,occ);
+    --occ[n];
+    push(res,occ[n]+1);
+    push(res,n);
     push(s, n);
-    return res;
+    return;
 }
 // Inserire qui sopra la definizione della funzione stackOperator
