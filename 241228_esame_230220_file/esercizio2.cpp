@@ -132,8 +132,8 @@ void estrai_aux(const tree *t, int *&l1, int &i, int *&l2, int &j)
 	if (t == nullptr)
 		return;
 	const int n = t->info;
-	const int my_i = i;
-	const int my_j = j;
+	//const int my_i = i;
+	//const int my_j = j;
 	estrai_aux(t->right, l1, i, l2, j);
 	if ((n % 2) == 0)
 	{

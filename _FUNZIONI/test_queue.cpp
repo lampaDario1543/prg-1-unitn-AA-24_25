@@ -83,6 +83,38 @@ int length(Queue * q) {
   reverse(q);
   return res;
 }
+
+    void FrontToLast(Queue *& q, int qsize) {
+        if (qsize <= 0)
+            return;
+        
+        enqueue(q, first(q));
+        dequeue(q);
+        FrontToLast(q, qsize - 1);
+    }
+
+    void pushInQueue(Queue *& q, int temp, int qsize) {
+        if (isEmpty(q) || qsize == 0) {
+            enqueue(q, temp);
+            return;
+        } else if (temp <= first(q)) {
+            enqueue(q, temp);
+            FrontToLast(q, qsize);
+        } else {
+            enqueue(q, first(q));
+            dequeue(q);
+            pushInQueue(q, temp, qsize - 1);
+        }
+    }
+
+    void sort(Queue *& q) {
+        if (isEmpty(q))
+            return;
+        int temp = first(q);
+        dequeue(q);
+        sort(q);
+        pushInQueue(q, temp, length(q));
+    }
 void getNth_aux(Queue *&q, int i, int &res)
     {
         if(isEmpty(q)) return;
@@ -133,14 +165,56 @@ bool contains(Queue *&q, const int n){
     reverse(q);
     return res;
 } 
+int sumElementsWithDistance_aux(Queue *& q, int n, int i) {
+        if (isEmpty(q)) {
+            return 0;
+        }
+        int current = dequeue(q);
+        if(i == 0) {
+            i = n;
+            int sum = sumElementsWithDistance_aux(q,n,i);
+            enqueue(q, current);
+            // std::cout << "CURRENT ELEMENT: " << current << std::endl;
+            return sum+current;
+        }
+        if(i <= n) {
+            i--;
+            int sum = sumElementsWithDistance_aux(q,n,i);
+            enqueue(q, current);
+            return sum;
+        }
+    }
+
+    int sumElementsWithDistance(Queue *& q, int n) {
+        int ris = sumElementsWithDistance_aux(q,n,0);
+        reverse(q);
+        return ris;
+    }
+
+void insertAtIndex(Queue*& q, int value, int index) {
+        if (index < 1 || index > length(q) + 1) {
+            std::cerr << "insertAtIndex Error: index out of range" << std::endl;
+            return;
+        }
+        if (index == 1) {
+            enqueue(q, value);
+            return;
+        }
+
+        int tempValue = dequeue(q);
+        insertAtIndex(q, value, index - 1);
+        enqueue(q, tempValue);
+    }
+    
 int main(){
     Queue *q = init();
     for(int i = 0; i < 10; i++)
         enqueue(q, 10-i);
+    dequeue(q);
     visualizza(q);
-    cout << removeNth(q,0)<<endl;
+    //cout << sumElementsWithDistance(q,0)<<endl;
+    sort(q);
     visualizza(q);
     quit(q);
     return 0;
 }
-

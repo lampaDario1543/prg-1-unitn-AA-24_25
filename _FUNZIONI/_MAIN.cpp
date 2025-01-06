@@ -1,6 +1,31 @@
 #include <iostream>
 
 using namespace std;
+
+//memoria dinamica controllare che venga allocato giustamente:
+    int *v = new (nothrow) int[10];
+    if(v==nullptr){
+        cout << "Memory allocation failed." << endl;
+        return 1;
+    }
+    delete[] v;
+
+//matrice dinamica:
+    //allocazione:
+    int **m = new int *[ROW];
+    for (int i = 0; i < ROW; i++)
+        m[i] = new int[COL];
+    //deallocazione
+    for (int i = 0; i < ROW; i++)
+        delete[] m[i];
+    delete[] m;
+
+//QUEUE --> FIFO
+//STACK --> LIFO
+
+//file:
+file >> noskipws;
+
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 /*
 ####################
@@ -392,11 +417,13 @@ int length (list * s, list * x) { //x primo elemento
 
 
 
-//lunghezza stack:
-    int length(Stack *s, int ctr=0){
-        if(s==nullptr)
-            return ctr;
-        return length(s->next, ctr+1);
+//Lunghezza stack (stack length):
+    int length(Stack *&s){
+        if(isEmpty(s))  return 0;
+        int n=pop(s);
+        int res=length(s);
+        push(s,n);
+        return 1+res;
     }
 
 
@@ -409,7 +436,7 @@ int length (list * s, list * x) { //x primo elemento
 
 
 
-//ottieni elemento in posizione n:
+//ottieni elemento in posizione n in uno stack:
 //va da 0 a length-1
     int getNth(Stack *&s, int n){
         if(n==0)
@@ -434,6 +461,29 @@ int length (list * s, list * x) { //x primo elemento
 
 
 
+// Cambia un elemento in posizione n in uno Stack:
+    void changeElement_aux(Stack *& s, int index, int newValue, int currentIndex) {
+        if (isEmpty(s) || index < 0) {
+            return;
+        }
+
+        int topElement = top(s);
+        pop(s);
+
+        if (currentIndex == index) {
+            topElement = newValue;
+        }
+
+        changeElement_aux(s, index, newValue, currentIndex + 1);
+
+        push(s, topElement);
+    }
+    void changeElement(Stack *& s, int index, int value) {
+        changeElement_aux(s, index, value, 0);
+    }
+
+
+
 //controlla se uno stack contiene un elemento:
     bool contains(Stack *&s, const int n){
         if(isEmpty(s))
@@ -445,6 +495,29 @@ int length (list * s, list * x) { //x primo elemento
         push(s,value);
         return res;
     }
+
+
+
+// Sorting di un stack
+    void sortedInsert(Stack * &s, int value) {
+        if (isEmpty(s) || top(s) <= value) {
+            push(s, value);
+            return;
+        }
+
+        int temp = pop(s);
+        sortedInsert(s, value);
+        push(s, temp);
+    }
+
+    //sorting dello stack
+    void sortStack(Stack * &s) {
+        if (!isEmpty(s)) {
+            int temp = pop(s);
+            sortStack(s);
+            sortedInsert(s, temp);
+        }
+    }
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 /*
 ####################
@@ -452,7 +525,7 @@ int length (list * s, list * x) { //x primo elemento
 ####################
 */
 
-// reverse coda:
+// reverse queue coda:
     void reverse(Queue *&q){
         if(isEmpty(q))
             return;
@@ -465,18 +538,18 @@ int length (list * s, list * x) { //x primo elemento
 
 //lunghezza coda:
 //ATTENZIONE: IMPLEMENTARE ENTRAMBE LE FUNZIONI E ANCHE REVERSE.
-    int lenght_rec(Queue *&q, int ctr=0){
+    int length_rec(Queue *&q, int ctr=0){
         if(isEmpty(q))
             return ctr;
         int v = dequeue(q);
         ctr++;
-        int res = lenght_rec(q, ctr);
+        int res = length_rec(q, ctr);
         enqueue(q, v);
         return res;
     }
 
     int length(Queue * q) {
-        int res=lenght_rec(q);
+        int res=length_rec(q);
         reverse(q);
         return res;
     }
@@ -543,7 +616,70 @@ int length (list * s, list * x) { //x primo elemento
         contains_aux(q,n, res);
         reverse(q);
         return res;
-    }  
+    }
+
+
+
+//somma due elementi ad una certa distanza in una coda
+    int sumElementsWithDistance_aux(Queue *& q, int n, int i) {
+        if (isEmpty(q)) {
+            return 0;
+        }
+        int current = dequeue(q);
+        if(i == 0) {
+            i = n;
+            int sum = sumElementsWithDistance_aux(q,n,i);
+            enqueue(q, current);
+            return sum+current;
+        }
+        if(i <= n) {
+            i--;
+            int sum = sumElementsWithDistance_aux(q,n,i);
+            enqueue(q, current);
+            return sum;
+        }
+    }
+
+    int sumElementsWithDistance(Queue *& q, int n) {
+        int ris = sumElementsWithDistance_aux(q,n,0);
+        reverse(q);
+        return ris;
+    }
+
+
+
+// sorting queue:
+    void FrontToLast(Queue *& q, int qsize) {
+        if (qsize <= 0)
+            return;
+        
+        enqueue(q, first(q));
+        dequeue(q);
+        FrontToLast(q, qsize - 1);
+    }
+
+    void pushInQueue(Queue *& q, int temp, int qsize) {
+        if (isEmpty(q) || qsize == 0) {
+            enqueue(q, temp);
+            return;
+        } else if (temp <= first(q)) {
+            enqueue(q, temp);
+            FrontToLast(q, qsize);
+        } else {
+            enqueue(q, first(q));
+            dequeue(q);
+            pushInQueue(q, temp, qsize - 1);
+        }
+    }
+
+    void sort(Queue *& q) {
+        if (isEmpty(q))
+            return;
+        int temp = first(q);
+        dequeue(q);
+        sort(q);
+        pushInQueue(q, temp, length(q));
+    }
 /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -761,4 +897,66 @@ int length (list * s, list * x) { //x primo elemento
             ++occ;
         }
         return occ;
+    }
+
+
+
+//conta occorrenze di una sottostringa in una stringa:
+//ha bisogno di strlen (usare length)
+// NON SERVE CSTRING
+    int countSubstr(char *str, char *find)
+    {
+        int ctr = 0;
+        for (int i = 0; i < length(str); i++)
+        {
+            bool found = true;
+            for (int j = 0; j < length(find); j++)
+            {
+                if (str[i + j] != find[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
+            if (found)
+                ctr++;
+        }
+        return ctr;
+    }
+
+
+
+// Ottiene una sottostringa da una stringa:
+    char *substr(char *str, int start, int end)
+    {
+        char *substr = new char[end - start + 1];
+        for (int i = 0; i < end - start; i++)
+        {
+            substr[i] = str[start + i];
+        }
+        substr[end - start] = '\0';
+        return substr;
+    }
+
+
+
+// lunghezza di una stringa:
+    int length(char *s){
+        int i;
+        for (i = 0; str[i] != '\0'; i++);
+        return i;
+    }
+
+
+
+//converte una stringa in un intero:
+//ATTENZIONE: necessita di length, e non funziona con numeri negativi
+    int strToInt(char *str){
+        int num = 0;
+        int len = length(str);
+        for (int i = 0; i < len; i++)
+        {
+            num = num * 10 + (str[i] - '0');
+        }
+        return num;
     }

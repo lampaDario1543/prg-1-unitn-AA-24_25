@@ -208,9 +208,12 @@ void insert_inorder(list * & res, int v) {
     }
 int main(){
     list *l=nullptr;
-    for(int i=0;i< 10;i++)
-        insert_inorder(l, rand()%80);
+    /*for(int i=0;i< 10;i++)
+        insert_inorder(l, rand()%80);*/
+    insert_first(l,1);
+    insert_first(l,2);
     visualizza(l);
+    insert_at(l,669,1);
     visualizza(l);
     cout << "Len= "<< length(l);
     delete_list(l);

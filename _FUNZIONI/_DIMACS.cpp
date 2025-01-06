@@ -43,7 +43,7 @@ bool checkHeader(fstream &, int &, int &);
 
 int main(int argc, char ** argv) {
     if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <number>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
         exit(1);
     }
 
@@ -76,13 +76,11 @@ int main(int argc, char ** argv) {
         if (!error) clauses[i][n] = 0;
     }
     //IL FILE DEVE TERMINARE CON UN \n
-    { //controllo che effettivamente sia finito il file
-        char c;
-        in >> c;
-        if (!in.eof()) {
-            error = true;
-        }
-    }
+    //controllo che effettivamente sia finito il file
+    char c;
+    in >> c;
+    if (!in.eof()) error = true;
+
     in.close();
     if (i != nClauses || error) {
         //se il numero delle clausole non è uguale oppure se c'è stato un errore prima dealloco e termino
@@ -95,7 +93,7 @@ int main(int argc, char ** argv) {
     }
     clauses[i] = nullptr;
     //dealloco.
-    for(int i = 0; i < nClauses && clauses[i] != nullptr; i++) {
+    for(i = 0; i < nClauses && clauses[i] != nullptr; i++) {
         delete [] clauses[i];
     }
     delete [] clauses;

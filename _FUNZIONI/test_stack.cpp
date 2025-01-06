@@ -91,18 +91,15 @@ void deleteStack(struct Stack *&s)
     }
 }
 
-void printStack(struct Stack *s, const char *message = "Stack: ")
-{
-    if (isEmpty(s))
-    {
+void printStack(struct Stack * s, const char * message = "Stack: ") {
+    if (isEmpty(s)) {
         std::cout << "Stack is empty" << std::endl;
     }
     else
     {
         std::cout << message;
-        struct Stack *temp = s;
-        while (temp != nullptr)
-        {
+        struct Stack * temp = s;
+        while (temp != nullptr) {
             std::cout << temp->data << " ";
             temp = temp->next;
         }
@@ -134,16 +131,31 @@ bool contains(Stack *&s, const int n){
         return res;
     }
 
+void changeElement_aux(Stack *& s, int index, int newValue, int currentIndex) {
+    if (isEmpty(s) || index < 0) {
+        return;
+    }
+
+    int topElement = top(s);
+    pop(s);
+
+    if (currentIndex == index) {
+        topElement = newValue;
+    }
+
+    changeElement_aux(s, index, newValue, currentIndex + 1);
+
+    push(s, topElement);
+}
+void changeElement(Stack *& s, int index, int value) {
+    changeElement_aux(s, index, value, 0);
+}
 int main(){
     Stack *s = initStack();
     for(int i=0;i<10;i++)
         push(s,i);
     printStack(s);
-    reverse(s);
-    pop(s);
-    printStack(s);
-    cout << contains(s, 1)<<endl;
-    pop(s);
+    cout << getNth(s,0)<<endl;
     printStack(s);
     cout << lenght_rec(s) << endl;
     deleteStack(s);
@@ -173,12 +185,11 @@ void reverse(Stack *& s) {
 }
 //without modify the stack
 
-int getNth(Stack *&s, int n){
-    if(n==0){
-        return top(s);
+    int getNth(Stack *&s, int n){
+        if(n==0)
+            return top(s);
+        int value = pop(s);
+        int res = getNth(s,n-1);
+        push(s,value);
+        return res;
     }
-    int value = pop(s);
-    int res = getNth(s,n-1);
-    push(s,value);
-    return res;
-}
