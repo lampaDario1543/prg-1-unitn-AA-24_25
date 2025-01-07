@@ -1,0 +1,3 @@
+Esercizio 1:
+ * Funzione elabora
+    Riga 105 ho fatto r[3]=abb[i].costo; al posto di r[3]+=abb[i].costo;
