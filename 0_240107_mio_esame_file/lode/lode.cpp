@@ -4,7 +4,6 @@
 using namespace std;
 
 // Inserire qui sotto la dichiarazione della funzione treeSuccessor
-//Malinverno Tommaso
 Node *treeSuccessor(Node *, Node *);
 bool getNext(coda &, const int, int &successor);
 // Inserire qui sopra la dichiarazione della funzione treeSuccessor

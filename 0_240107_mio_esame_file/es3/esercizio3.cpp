@@ -104,7 +104,6 @@ void printQueue(Queue * s, const char * message = "Queue: ") {
 // Non modificare questa parte sopra del codice
 
 // Inserire qui sotto la dichiarazione della funzione calcola
-//Malinverno Tommaso
 void calcola(Queue * &q);
 void getValue_aux(Queue *&q, int i, int &res);
 int getValue(Queue * & q, int i);

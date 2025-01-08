@@ -136,7 +136,6 @@ void destroy_dimacs(Dimacs & d) {
 // DO NOT MODIFY CODE ABOVE THIS LINE
 
 // Add declarations of check_assignment here below
-//Malinverno Tommaso
 bool check_assigment(Dimacs &, Assignment &);
 bool check_assigment_aux(cnf_t *&, bool *);
 bool checkClause(List *&, bool *);

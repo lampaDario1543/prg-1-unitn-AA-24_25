@@ -5,7 +5,6 @@
 using namespace std;
 
 // DO NOT MODIFY CODE ABOVE THIS LINE
-//Tommaso Malinverno
 const int LEN=32; //con terminatore
 
 struct Abbonamento{
